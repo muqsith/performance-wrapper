@@ -2,34 +2,34 @@ const crypto = require('crypto'),
     util = require('util'),
     applyPerformanceWrapper = require('../index')
     ;
-class DatabaseConnector {
+class MoreDummy {
 
     constructor(a, b, c) {
         console.log(a, b, c);
     }
 
-    query0(str) {
+    op0(str) {
         const hash = crypto.createHmac('sha256', 'secret')
                    .update(str)
                    .digest('hex');
         return hash;
     }
 
-    query1(options, cb) {
+    op1(options, cb) {
         let result = ['a', 'b', 'c', 'd', 'e'];
         setTimeout(() => {
             cb(result);
         }, 200);
     }
 
-    query2(opt1, opt2, cb) {
+    op2(opt1, opt2, cb) {
         let result = ['1', '2', '3', '4', '5', '6'];
         setTimeout(() => {
             cb(result);
         }, 100);
     }
 
-    query3(opt1) {
+    op3(opt1) {
         return (
             new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -44,7 +44,7 @@ class DatabaseConnector {
     }
 }
 
-class Dummy extends DatabaseConnector {
+class Dummy extends MoreDummy {
     constructor(a, b, c) {
         super(a, b, c)
     }
@@ -56,14 +56,14 @@ function logger({functionName, args, startTime, endTime}) {
 
 describe('test applyPerformanceWrapper', function() {
     it('#applyPerformanceWrapper', function(done) {
-        // creation of dal
-    const dal = applyPerformanceWrapper(new Dummy(1,2,3), 'dal', logger);
+        // creation of obj
+    const obj = applyPerformanceWrapper(new Dummy(1,2,3), 'obj', logger);
 
-    // users of dal
-    console.log(dal.query0('muqsith'));
-    dal.query1('select * from persons', console.log);
-    dal.query2(null, null, console.log);
-    dal.query3('promise')
+    // users of obj
+    console.log(obj.op0('muqsith'));
+    obj.op1('select * from persons', console.log);
+    obj.op2(null, null, console.log);
+    obj.op3('promise')
     .then((res) => {
         console.log(res);
         done();

@@ -6,9 +6,16 @@ const getFunctionsNames = (obj) => {
     } while ((obj = Object.getPrototypeOf(obj)) && obj !== Object.prototype);
 
     return fNames;
-}
+};
+
+const notifyPerformance = (fn, performanceDetails) => {
+    setTimeout(() => {
+        fn(performanceDetails);
+    }, 0);
+};
 
 const applyPerformanceWrapper = (obj, objectName, performanceNotificationCallback) => {
+    let _notifyPerformance = notifyPerformance.bind(null, performanceNotificationCallback);
     let fNames = getFunctionsNames(obj);
     for (let fName of fNames) {
         let originalFunction = obj[fName];
@@ -25,7 +32,7 @@ const applyPerformanceWrapper = (obj, objectName, performanceNotificationCallbac
             if (_callBack) {
                 let callbackWrapper = (...callbackArgs) => {
                     let endTime = Date.now();
-                    performanceNotificationCallback({'functionName': `${objectName}.${fName}`, args, startTime, endTime});
+                    _notifyPerformance({'functionName': `${objectName}.${fName}`, args, startTime, endTime});
                     _callBack.apply(null, callbackArgs);
                 }
                 args[callbackFnIndex] = callbackWrapper;
@@ -37,18 +44,18 @@ const applyPerformanceWrapper = (obj, objectName, performanceNotificationCallbac
                 originalReturnObject
                 .then((...resolveArgs) => {
                     let endTime = Date.now();
-                    performanceNotificationCallback({'functionName': `${objectName}.${fName}`, args, startTime, endTime});
+                    _notifyPerformance({'functionName': `${objectName}.${fName}`, args, startTime, endTime});
                     return Promise.resolve(resolveArgs);
                 })
                 .catch((...rejectArgs) => {
                     let endTime = Date.now();
-                    performanceNotificationCallback({'functionName': `${objectName}.${fName}`, args, startTime, endTime});
+                    _notifyPerformance({'functionName': `${objectName}.${fName}`, args, startTime, endTime});
                     return Promise.reject(rejectArgs);
                 })
             }
             if (!_callBack && !isPromiseType) {
                 let endTime = Date.now();
-                performanceNotificationCallback({'functionName': `${objectName}.${fName}`, args, startTime, endTime});
+                _notifyPerformance({'functionName': `${objectName}.${fName}`, args, startTime, endTime});
             }
             return originalReturnObject;
         }
