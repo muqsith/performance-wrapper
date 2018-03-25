@@ -18,5 +18,7 @@ Inject start-time and end-time calls your methods dynamically without modifying 
 
 
 
-
 `
+
+
+The passed callback function (logger in the above case) is called asynchronously, without affecting the stack of the function under observation.
