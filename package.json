@@ -1,6 +1,6 @@
 {
   "name": "performance-wrapper",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A wrapper to obtain performance(only time) for methods (functions within object)",
   "main": "index.js",
   "scripts": {
