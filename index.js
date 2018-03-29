@@ -14,9 +14,21 @@ const getFunctionsNames = (obj) => {
 const notifyPerformance = (fn, performanceDetails) => {
     setTimeout(() => {
         let {functionName, args, startTime, endTime} = performanceDetails;
-        let _args = args.slice(0).filter((arg) => {
-            return (typeof arg !== 'function');
-        });
+        let _args = args;
+        if (Array.isArray(args)) {
+            _args = args.map((arg) => {
+                if (typeof arg === 'function') {
+                    let fName = arg.name;
+                    if (!fName) {
+                        fName = 'function';
+                    } else if (fName === 'callbackWrapper') {
+                        fName = 'callback';
+                    }
+                    arg = `[${fName} Function]`;
+                }
+                return arg;
+            });
+        }
         fn({functionName, args: _args, startTime, endTime});
     }, 0);
 };
