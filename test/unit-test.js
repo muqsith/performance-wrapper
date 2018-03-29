@@ -1,9 +1,6 @@
 const util = require('util'),
+    assert = require('assert'),
     applyPerformanceWrapper = require('../index');
-
-function logger({functionName, args, startTime, endTime}) {
-    console.log(functionName, util.inspect(args), startTime, endTime);
-}
 
 class MyObject {
     constructor() {
@@ -13,7 +10,7 @@ class MyObject {
     callbackSum(a,b, cb) {
         setTimeout(() => {
             cb(a+b);
-        }, 1500);
+        }, 150);
     }
 
     promisedSum(a,b) {
@@ -21,7 +18,7 @@ class MyObject {
             new Promise((resolve, reject) => {
                 setTimeout(() => {
                     resolve(a+b);
-                }, 1000);
+                }, 100);
             })
         );
     }
@@ -35,19 +32,47 @@ class MyObject {
     }
 }
 
-const myObj = applyPerformanceWrapper(new MyObject(), 'myObj', logger);
+describe("Test performance wrapper", function () {
 
-console.log('normal: ', myObj.sum(3, 5));
-myObj.callbackSum(3, 5, (result) => {
-    console.log('callback: ', result);
-});
+    const logger = ({functionName, args, startTime, endTime}) => {
+        console.log(functionName, util.inspect(args), startTime, endTime);
+    };
 
-myObj.promisedSum(3, 5)
-.then((result) => {
-    console.log('promise: ', result);
-});
+    const myObj = applyPerformanceWrapper(new MyObject(), 'myObj', logger);
 
-myObj.asyncSum(3, 5)
-.then((result) => {
-    console.log('async: ', result);
+    it("normal method call", function () {
+        let result = myObj.sum(3, 5);
+        console.log('normal: ', result);
+        assert.equal(result, 8);
+    });
+
+
+    it("normal method call", function (done) {
+        myObj.callbackSum(3, 5, (result) => {
+            console.log('callback: ', result);
+            assert.equal(result, 8);
+            done();
+        });
+    });
+
+
+    it("normal method call", function (done) {
+        myObj.promisedSum(3, 5)
+        .then((result) => {
+            console.log('promise: ', result);
+            assert.equal(result, 8);
+            done();
+        });
+    });
+
+    it("normal method call", function (done) {
+        myObj.asyncSum(3, 5)
+        .then((result) => {
+            console.log('async: ', result);
+            assert.equal(result, 8);
+            done();
+        });
+    });
+
+
 });
