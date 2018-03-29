@@ -10,7 +10,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.one.com/mui/performance-wrapper.git"
+    "url": "https://github.com/muqsith/performance-wrapper.git"
   },
   "devDependencies": {
     "mocha": "^5.0.4"
