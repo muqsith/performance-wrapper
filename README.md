@@ -72,10 +72,15 @@ This library exports a default function called applyPerformanceWrapper, this fun
 - object: the methods of this obect are intercepted for performance logging
 - name: name for the object, this name appended to the returned function name in logging
 - logger: this is a function that receives the performance details of the function under observation
+
     -- name : name of the function under observation, eg: myObj.sum
+
     -- arguments: arguments to the function under observation, eg: a,b
+
     -- start time: start time of the function under observation
+
     -- end time: end time of the function under observation
+
 
 
 The passed callback function (logger in the above case) is called asynchronously, without affecting the stack of the function under observation.

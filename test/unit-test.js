@@ -11,7 +11,9 @@ class MyObject {
     }
 
     callbackSum(a,b, cb) {
-        cb(a+b);
+        setTimeout(() => {
+            cb(a+b);
+        }, 1500);
     }
 
     promisedSum(a,b) {
@@ -19,7 +21,7 @@ class MyObject {
             new Promise((resolve, reject) => {
                 setTimeout(() => {
                     resolve(a+b);
-                }, 100);
+                }, 1000);
             })
         );
     }

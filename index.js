@@ -1,3 +1,6 @@
+
+module.exports = (function(){
+
 const getFunctionsNames = (obj) => {
     // courtesy: https://stackoverflow.com/a/31055217/2388706
     let fNames = [];
@@ -64,5 +67,5 @@ const applyPerformanceWrapper = (obj, objectName, performanceNotificationCallbac
 
     return obj;
 }
-
-module.exports = applyPerformanceWrapper;
+return applyPerformanceWrapper;
+})();
