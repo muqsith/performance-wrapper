@@ -13,7 +13,11 @@ const getFunctionsNames = (obj) => {
 
 const notifyPerformance = (fn, performanceDetails) => {
     setTimeout(() => {
-        fn(performanceDetails);
+        let {functionName, args, startTime, endTime} = performanceDetails;
+        let _args = args.slice(0).filter((arg) => {
+            return (typeof arg !== 'function');
+        });
+        fn({functionName, args: _args, startTime, endTime});
     }, 0);
 };
 
