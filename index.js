@@ -1,5 +1,5 @@
 
-module.exports = (function(){
+const applyPerformanceWrapper = (function(){
 
 const getFunctionsNames = (obj) => {
     // courtesy: https://stackoverflow.com/a/31055217/2388706
@@ -17,7 +17,7 @@ const notifyPerformance = (fn, performanceDetails) => {
     }, 0);
 };
 
-const applyPerformanceWrapper = (obj, objectName, performanceNotificationCallback) => {
+const performanceWrapper = (obj, objectName, performanceNotificationCallback) => {
     let _notifyPerformance = notifyPerformance.bind(null, performanceNotificationCallback);
     let fNames = getFunctionsNames(obj);
     for (let fName of fNames) {
@@ -67,5 +67,9 @@ const applyPerformanceWrapper = (obj, objectName, performanceNotificationCallbac
 
     return obj;
 }
-return applyPerformanceWrapper;
+return performanceWrapper;
 })();
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = applyPerformanceWrapper;
+}
