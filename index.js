@@ -60,16 +60,16 @@ const performanceWrapper = (obj, objectName, performanceNotificationCallback) =>
             let isPromiseType = (originalReturnObject && typeof originalReturnObject.then === 'function'
                 && typeof originalReturnObject.catch === 'function');
             if (isPromiseType) {
-                originalReturnObject
+                return originalReturnObject
                 .then((...resolveArgs) => {
                     let endTime = Date.now();
                     _notifyPerformance({'functionName': `${objectName}.${fName}`, args, startTime, endTime});
-                    return Promise.resolve(resolveArgs);
+                    return Promise.resolve(...resolveArgs);
                 })
                 .catch((...rejectArgs) => {
                     let endTime = Date.now();
                     _notifyPerformance({'functionName': `${objectName}.${fName}`, args, startTime, endTime});
-                    return Promise.reject(rejectArgs);
+                    return Promise.reject(...rejectArgs);
                 })
             }
             if (!_callBack && !isPromiseType) {
